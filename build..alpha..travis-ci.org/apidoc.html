@@ -1,0 +1,207 @@
+<div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a
+
+        href="http://enderjs.com"
+
+    >ender (v2.1.1)</a>
+</h1>
+<h4>Open Module JavaScript Framework</h4>
+<div class="apidocSectionDiv"><a
+    href="#apidoc.tableOfContents"
+    id="apidoc.tableOfContents"
+><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.ender">module ender</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.ender.exec">
+            function <span class="apidocSignatureSpan">ender.</span>exec
+            <span class="apidocSignatureSpan">(argv, log, callback)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.ender.exec">module ender.exec</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.ender.exec.exec">
+            function <span class="apidocSignatureSpan">ender.</span>exec
+            <span class="apidocSignatureSpan">(argv, log, callback)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.ender" id="apidoc.module.ender">module ender</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.ender.exec" id="apidoc.element.ender.exec">
+        function <span class="apidocSignatureSpan">ender.</span>exec
+        <span class="apidocSignatureSpan">(argv, log, callback)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">exec = function (argv, log, callback) {
+  var parseType = &#x27;parse&#x27;
+    , options
+
+    , complete = function (err) {
+        if (err &#x26;&#x26; log) {
+          var name = (err.name || &#x27;Error&#x27;).replace(/([a-z])([A-Z])/g, &#x27;$1 $2&#x27;)
+
+          log.error(&#x27;{red}{bold}&#x27; + name + &#x27;: {/bold}&#x27; + err.message + &#x27;{/red}&#x27;)
+
+          if (options.debug) {
+            log.error(err.stack)
+            if (err.cause) log.error(&#x27;Caused by:\n&#x27; + err.cause.stack)
+
+          } else log.error(&#x27;Run with --debug to see more information&#x27;)
+        }
+
+        callback(err)
+      }
+
+  if (arguments.length &#x3c; 3) {
+    callback = log
+    log = undefined
+  }
+
+  if (typeof argv == &#x27;string&#x27;) {
+    // for API use: ender.exec(&#x27;ender &#x3c;cmd&#x3e;&#x27;, cb)
+    argv = argv.split(/\s/).slice(1)
+    parseType = &#x27;parseClean&#x27; // parseClean knows there aren&#x27;t 2 preceeding tokens
+  }
+
+  try {
+    options = argsParser[parseType](argv)
+    require(&#x27;./commands/&#x27; + options.command).exec(options, log, complete)
+  } catch (ex) {
+    options = options || { debug: argv.indexOf(&#x27;--debug&#x27;) != -1 }
+    complete(ex)
+  }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.ender.exec" id="apidoc.module.ender.exec">module ender.exec</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.ender.exec.exec" id="apidoc.element.ender.exec.exec">
+        function <span class="apidocSignatureSpan">ender.</span>exec
+        <span class="apidocSignatureSpan">(argv, log, callback)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">exec = function (argv, log, callback) {
+  var parseType = &#x27;parse&#x27;
+    , options
+
+    , complete = function (err) {
+        if (err &#x26;&#x26; log) {
+          var name = (err.name || &#x27;Error&#x27;).replace(/([a-z])([A-Z])/g, &#x27;$1 $2&#x27;)
+
+          log.error(&#x27;{red}{bold}&#x27; + name + &#x27;: {/bold}&#x27; + err.message + &#x27;{/red}&#x27;)
+
+          if (options.debug) {
+            log.error(err.stack)
+            if (err.cause) log.error(&#x27;Caused by:\n&#x27; + err.cause.stack)
+
+          } else log.error(&#x27;Run with --debug to see more information&#x27;)
+        }
+
+        callback(err)
+      }
+
+  if (arguments.length &#x3c; 3) {
+    callback = log
+    log = undefined
+  }
+
+  if (typeof argv == &#x27;string&#x27;) {
+    // for API use: ender.exec(&#x27;ender &#x3c;cmd&#x3e;&#x27;, cb)
+    argv = argv.split(/\s/).slice(1)
+    parseType = &#x27;parseClean&#x27; // parseClean knows there aren&#x27;t 2 preceeding tokens
+  }
+
+  try {
+    options = argsParser[parseType](argv)
+    require(&#x27;./commands/&#x27; + options.command).exec(options, log, complete)
+  } catch (ex) {
+    options = options || { debug: argv.indexOf(&#x27;--debug&#x27;) != -1 }
+    complete(ex)
+  }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
