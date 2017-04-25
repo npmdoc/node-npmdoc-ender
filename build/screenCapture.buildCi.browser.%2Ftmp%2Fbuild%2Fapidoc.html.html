@@ -792,17 +792,15 @@
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-  , exec = function (options, log, callback) {
-      var filename = util.getInputFilenameFromOptions(options)
-    ; delete options.use // don't want --use showing up in the 'Build:' context string
-      util.parseContext(filename, function (err, context) {
-        if (!err) options = argsParser.extend(context.options, options)
-        // merge commandline args with the build command in ender.js
-        build.<span class="apidocCodeKeywordSpan">exec</span>(options, log, callback)
-      })
-    }
 
-module.exports.exec = exec
+#!/usr/bin/env node
+
+var main = require('../lib/main')
+  , log  = require('../lib/util').defaultLogger
+
+main.<span class="apidocCodeKeywordSpan">exec</span>(process.argv, log, function (err) {
+  process.exit(err ? 1 : 0)
+})
 ...</pre></li>
     </ul>
 
@@ -882,17 +880,15 @@ module.exports.exec = exec
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-  , exec = function (options, log, callback) {
-      var filename = util.getInputFilenameFromOptions(options)
-    ; delete options.use // don't want --use showing up in the 'Build:' context string
-      util.parseContext(filename, function (err, context) {
-        if (!err) options = argsParser.extend(context.options, options)
-        // merge commandline args with the build command in ender.js
-        build.<span class="apidocCodeKeywordSpan">exec</span>(options, log, callback)
-      })
-    }
 
-module.exports.exec = exec
+#!/usr/bin/env node
+
+var main = require('../lib/main')
+  , log  = require('../lib/util').defaultLogger
+
+main.<span class="apidocCodeKeywordSpan">exec</span>(process.argv, log, function (err) {
+  process.exit(err ? 1 : 0)
+})
 ...</pre></li>
     </ul>
 
@@ -1150,7 +1146,24 @@ callback(null, {
       }
   }, callback)
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+      if (!minifier) return new MinifyError('No such minifier: "' + options.minifier + '"')
+
+      packages.forEach(function (pkg) { pkg.extendOptions(extendedOptions) })
+      minifier(files, filenames, extendedOptions, callback)
+    }
+
+  , assembleBuild = function (callback) {
+      assemble.<span class="apidocCodeKeywordSpan">assemble</span>(filenames.build, filenames.sourceMap, options, packages, callback
+)
+    }
+
+  , loadSources = function (callback) {
+      async.each(packages, function (pkg, callback) { pkg.loadSources(callback) }, callback)
+    }
+
+async.waterfall([
+...</pre></li>
     </ul>
 
 
@@ -1207,17 +1220,15 @@ callback(null, {
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-  , exec = function (options, log, callback) {
-      var filename = util.getInputFilenameFromOptions(options)
-    ; delete options.use // don't want --use showing up in the 'Build:' context string
-      util.parseContext(filename, function (err, context) {
-        if (!err) options = argsParser.extend(context.options, options)
-        // merge commandline args with the build command in ender.js
-        build.<span class="apidocCodeKeywordSpan">exec</span>(options, log, callback)
-      })
-    }
 
-module.exports.exec = exec
+#!/usr/bin/env node
+
+var main = require('../lib/main')
+  , log  = require('../lib/util').defaultLogger
+
+main.<span class="apidocCodeKeywordSpan">exec</span>(process.argv, log, function (err) {
+  process.exit(err ? 1 : 0)
+})
 ...</pre></li>
     </ul>
 
@@ -1881,17 +1892,15 @@ module.exports.exec = exec
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-  , exec = function (options, log, callback) {
-      var filename = util.getInputFilenameFromOptions(options)
-    ; delete options.use // don't want --use showing up in the 'Build:' context string
-      util.parseContext(filename, function (err, context) {
-        if (!err) options = argsParser.extend(context.options, options)
-        // merge commandline args with the build command in ender.js
-        build.<span class="apidocCodeKeywordSpan">exec</span>(options, log, callback)
-      })
-    }
 
-module.exports.exec = exec
+#!/usr/bin/env node
+
+var main = require('../lib/main')
+  , log  = require('../lib/util').defaultLogger
+
+main.<span class="apidocCodeKeywordSpan">exec</span>(process.argv, log, function (err) {
+  process.exit(err ? 1 : 0)
+})
 ...</pre></li>
     </ul>
 
@@ -2109,17 +2118,15 @@ module.exports.exec = exec
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-  , exec = function (options, log, callback) {
-      var filename = util.getInputFilenameFromOptions(options)
-    ; delete options.use // don't want --use showing up in the 'Build:' context string
-      util.parseContext(filename, function (err, context) {
-        if (!err) options = argsParser.extend(context.options, options)
-        // merge commandline args with the build command in ender.js
-        build.<span class="apidocCodeKeywordSpan">exec</span>(options, log, callback)
-      })
-    }
 
-module.exports.exec = exec
+#!/usr/bin/env node
+
+var main = require('../lib/main')
+  , log  = require('../lib/util').defaultLogger
+
+main.<span class="apidocCodeKeywordSpan">exec</span>(process.argv, log, function (err) {
+  process.exit(err ? 1 : 0)
+})
 ...</pre></li>
     </ul>
 
@@ -2161,7 +2168,23 @@ module.exports.exec = exec
     <li>description and source-code<pre class="apidocCodePre">addPackageMapping = function (id, root) {
   packageMappings[id] = root
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    repository.install(idsToInstall, function (err, receipts) {
+      if (err) return callback(err) // wrapped in ender-repository
+
+      // Unmemoize all the packages we just installed
+      receipts.forEach(function (receipt) {
+        installedIds.push(receipt.id)
+        LocalPackage.unloadPackage(receipt.root)
+        LocalPackage.<span class="apidocCodeKeywordSpan">addPackageMapping</span>(receipt.source, receipt.root)
+      })
+
+      callback(null, receipts)
+    })
+  }
+
+, installRest = function (callback) {
+...</pre></li>
     </ul>
 
 
@@ -2464,7 +2487,22 @@ case 'package':
     if (packageMappings[key] == root)
       delete packageMappings[key]
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+        , install = function (idsToInstall, callback) {
+  repository.install(idsToInstall, function (err, receipts) {
+    if (err) return callback(err) // wrapped in ender-repository
+
+    // Unmemoize all the packages we just installed
+    receipts.forEach(function (receipt) {
+      installedIds.push(receipt.id)
+      LocalPackage.<span class="apidocCodeKeywordSpan">unloadPackage</span>(receipt.root)
+      LocalPackage.addPackageMapping(receipt.source, receipt.root)
+    })
+
+    callback(null, receipts)
+  })
+}
+...</pre></li>
     </ul>
 
 
@@ -2527,7 +2565,23 @@ case 'package':
       }
   )
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    })
+  }
+, callback
+            )
+          }
+
+        , updateMissing = function (callback) {
+            LocalPackage.<span class="apidocCodeKeywordSpan">walkDependencies</span>(ids, true, false, function (err, packages,
+_missing) {
+if (err) return callback(err) // this should never happen if we don't request `strict`
+
+missing = _missing
+var dupes = missing.filter(function (id) { return installedIds.indexOf(id) != -1 })
+if (dupes.length)
+  return callback(new DependencyLoopError('Installing identical package twice: ' + dupes))
+...</pre></li>
     </ul>
 
 
@@ -2556,7 +2610,22 @@ case 'package':
     }))
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    if (options.minifier == 'none') return callback(null, files)
+
+    var minifier = minifiers[options.minifier || 'uglify']
+      , extendedOptions = extend({}, options)
+
+    if (!minifier) return new MinifyError('No such minifier: "' + options.minifier + '"')
+
+    packages.forEach(function (pkg) { pkg.<span class="apidocCodeKeywordSpan">extendOptions</span>(extendedOptions) })
+    minifier(files, filenames, extendedOptions, callback)
+  }
+
+, assembleBuild = function (callback) {
+    assemble.assemble(filenames.build, filenames.sourceMap, options, packages, callback)
+  }
+...</pre></li>
     </ul>
 
 
@@ -2713,7 +2782,24 @@ case 'package':
       // concat the results and filter duplicates (this works on objects because loadFile is memoized)
       this.sources = [].concat(results.main, results.bridge, results.files)
       this.sources = this.sources.filter(f ...</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    }
+
+  , assembleBuild = function (callback) {
+      assemble.assemble(filenames.build, filenames.sourceMap, options, packages, callback)
+    }
+
+  , loadSources = function (callback) {
+      async.each(packages, function (pkg, callback) { pkg.<span class="apidocCodeKeywordSpan">loadSources</span>(callback) }, callback
+)
+    }
+
+async.waterfall([
+    loadSources
+  , assembleBuild
+  , minifyBuild
+  , writeFiles
+...</pre></li>
     </ul>
 
 
@@ -2777,17 +2863,15 @@ case 'package':
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-  , exec = function (options, log, callback) {
-      var filename = util.getInputFilenameFromOptions(options)
-    ; delete options.use // don't want --use showing up in the 'Build:' context string
-      util.parseContext(filename, function (err, context) {
-        if (!err) options = argsParser.extend(context.options, options)
-        // merge commandline args with the build command in ender.js
-        build.<span class="apidocCodeKeywordSpan">exec</span>(options, log, callback)
-      })
-    }
 
-module.exports.exec = exec
+#!/usr/bin/env node
+
+var main = require('../lib/main')
+  , log  = require('../lib/util').defaultLogger
+
+main.<span class="apidocCodeKeywordSpan">exec</span>(process.argv, log, function (err) {
+  process.exit(err ? 1 : 0)
+})
 ...</pre></li>
     </ul>
 
@@ -2837,17 +2921,15 @@ module.exports.exec = exec
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-  , exec = function (options, log, callback) {
-      var filename = util.getInputFilenameFromOptions(options)
-    ; delete options.use // don't want --use showing up in the 'Build:' context string
-      util.parseContext(filename, function (err, context) {
-        if (!err) options = argsParser.extend(context.options, options)
-        // merge commandline args with the build command in ender.js
-        build.<span class="apidocCodeKeywordSpan">exec</span>(options, log, callback)
-      })
-    }
 
-module.exports.exec = exec
+#!/usr/bin/env node
+
+var main = require('../lib/main')
+  , log  = require('../lib/util').defaultLogger
+
+main.<span class="apidocCodeKeywordSpan">exec</span>(process.argv, log, function (err) {
+  process.exit(err ? 1 : 0)
+})
 ...</pre></li>
     </ul>
 
@@ -2886,17 +2968,15 @@ module.exports.exec = exec
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-  , exec = function (options, log, callback) {
-      var filename = util.getInputFilenameFromOptions(options)
-    ; delete options.use // don't want --use showing up in the 'Build:' context string
-      util.parseContext(filename, function (err, context) {
-        if (!err) options = argsParser.extend(context.options, options)
-        // merge commandline args with the build command in ender.js
-        build.<span class="apidocCodeKeywordSpan">exec</span>(options, log, callback)
-      })
-    }
 
-module.exports.exec = exec
+#!/usr/bin/env node
+
+var main = require('../lib/main')
+  , log  = require('../lib/util').defaultLogger
+
+main.<span class="apidocCodeKeywordSpan">exec</span>(process.argv, log, function (err) {
+  process.exit(err ? 1 : 0)
+})
 ...</pre></li>
     </ul>
 
@@ -2925,7 +3005,25 @@ module.exports.exec = exec
 
   return corePackages
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+          , [ 'ender-core', 'ender-commonjs', 'apkg', 'pkg2', 'pkg3', '.&amp;#
+x27;, '..' ]
+        )
+      }
+  }
+
+, 'getCorePackages': {
+      'no args': function () {
+        assert.equals(util.<span class="apidocCodeKeywordSpan">getCorePackages</span>({}), ['ender-core', 'ender-
+commonjs'])
+      }
+  }
+
+, 'parseContext': {
+      'test simple old-skool parse': function (done) {
+        var content = ''
+              + '/*!\n'
+...</pre></li>
     </ul>
 
 
@@ -2973,21 +3071,20 @@ var argsParser   = require('../args-parser')
   return getCorePackages(options).concat(ids)
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-      if (options &amp;&amp; ids) return callback()
-
-      // read 'Build: ...' and 'Packages: ...' from the head of the build file
-      util.parseContext(buildName, function (err, context) {
-        if (err) return callback(err)
-        options = context.options
-
-        if (!ids) ids = util.<span class="apidocCodeKeywordSpan">packageList</span>(options)
-        callback()
-      })
+], function (err, files) {
+  if (err) return callback(err)
+  callback(null, files, filenames)
+})
     }
+
+  , exec = function (options, log, callback) {
+var ids = util.<span class="apidocCodeKeywordSpan">packageList</span>(options)
+  , refresh = options['force-install'] || options['_force-install']
 
 if (arguments.length &lt; 3) {
   callback = log
   log = undefined
+}
 ...</pre></li>
     </ul>
 
@@ -3125,17 +3222,15 @@ module.exports.exec = exec
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-  , exec = function (options, log, callback) {
-      var filename = util.getInputFilenameFromOptions(options)
-    ; delete options.use // don't want --use showing up in the 'Build:' context string
-      util.parseContext(filename, function (err, context) {
-        if (!err) options = argsParser.extend(context.options, options)
-        // merge commandline args with the build command in ender.js
-        build.<span class="apidocCodeKeywordSpan">exec</span>(options, log, callback)
-      })
-    }
 
-module.exports.exec = exec
+#!/usr/bin/env node
+
+var main = require('../lib/main')
+  , log  = require('../lib/util').defaultLogger
+
+main.<span class="apidocCodeKeywordSpan">exec</span>(process.argv, log, function (err) {
+  process.exit(err ? 1 : 0)
+})
 ...</pre></li>
     </ul>
 
